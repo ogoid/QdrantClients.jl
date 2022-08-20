@@ -1,0 +1,4 @@
+*.log
+proto
+.vscode
+Manifest.toml

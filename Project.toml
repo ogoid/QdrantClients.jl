@@ -1,0 +1,8 @@
+name = "QdrantClients"
+uuid = "565f80be-16e2-4911-8c0c-348f20257a3e"
+authors = ["no one <no@email.com>"]
+version = "0.1.0"
+
+[deps]
+ProtoBuf = "3349acd9-ac6a-5e09-bcdb-63829b23a429"
+gRPCClient = "aaca4a50-36af-4a1d-b878-4c443f2061ad"
