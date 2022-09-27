@@ -3,12 +3,18 @@ VERSION=0.9.1
 
 SRC_URL=https://github.com/qdrant/qdrant/archive/refs/tags/v${VERSION}.tar.gz
 
-.PHONY: all clean
+.PHONY: all clean package_version
 
-all: src/QdrantClients.jl
+all: src/QdrantClients.jl package_version
 
 clean:
 	rm -rf proto src
+	git checkout README.md Project.toml || true
+
+package_version:
+	sed -i -E 's|v[0-9.]+|v${VERSION}|g' README.md
+	sed -i -E 's|version = "[0-9.]+"|version = "${VERSION}"|' Project.toml
+
 
 src/QdrantClients.jl: proto/services.proto
 	julia -e 'import Pkg; Pkg.add("protoc_jll")'
