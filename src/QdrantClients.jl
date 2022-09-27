@@ -256,81 +256,6 @@ Count(client::PointsClient, inp::qdrant.CountPoints, done::Function) = Count(cli
 
 # end service: qdrant.Points
 
-# begin service: qdrant.Snapshots
-
-export SnapshotsBlockingClient, SnapshotsClient
-
-struct SnapshotsBlockingClient
-    controller::gRPCController
-    channel::gRPCChannel
-    stub::SnapshotsBlockingStub
-
-    function SnapshotsBlockingClient(api_base_url::String; kwargs...)
-        controller = gRPCController(; kwargs...)
-        channel = gRPCChannel(api_base_url)
-        stub = SnapshotsBlockingStub(channel)
-        new(controller, channel, stub)
-    end
-end
-
-struct SnapshotsClient
-    controller::gRPCController
-    channel::gRPCChannel
-    stub::SnapshotsStub
-
-    function SnapshotsClient(api_base_url::String; kwargs...)
-        controller = gRPCController(; kwargs...)
-        channel = gRPCChannel(api_base_url)
-        stub = SnapshotsStub(channel)
-        new(controller, channel, stub)
-    end
-end
-
-show(io::IO, client::SnapshotsBlockingClient) = print(io, "SnapshotsBlockingClient(", client.channel.baseurl, ")")
-show(io::IO, client::SnapshotsClient) = print(io, "SnapshotsClient(", client.channel.baseurl, ")")
-
-import .qdrant: Create
-"""
-    Create
-
-- input: qdrant.CreateSnapshotRequest
-- output: qdrant.CreateSnapshotResponse
-"""
-Create(client::SnapshotsBlockingClient, inp::qdrant.CreateSnapshotRequest) = Create(client.stub, client.controller, inp)
-Create(client::SnapshotsClient, inp::qdrant.CreateSnapshotRequest, done::Function) = Create(client.stub, client.controller, inp, done)
-
-import .qdrant: List
-"""
-    List
-
-- input: qdrant.ListSnapshotsRequest
-- output: qdrant.ListSnapshotsResponse
-"""
-List(client::SnapshotsBlockingClient, inp::qdrant.ListSnapshotsRequest) = List(client.stub, client.controller, inp)
-List(client::SnapshotsClient, inp::qdrant.ListSnapshotsRequest, done::Function) = List(client.stub, client.controller, inp, done)
-
-import .qdrant: CreateFull
-"""
-    CreateFull
-
-- input: qdrant.CreateFullSnapshotRequest
-- output: qdrant.CreateSnapshotResponse
-"""
-CreateFull(client::SnapshotsBlockingClient, inp::qdrant.CreateFullSnapshotRequest) = CreateFull(client.stub, client.controller, inp)
-CreateFull(client::SnapshotsClient, inp::qdrant.CreateFullSnapshotRequest, done::Function) = CreateFull(client.stub, client.controller, inp, done)
-
-import .qdrant: ListFull
-"""
-    ListFull
-
-- input: qdrant.ListFullSnapshotsRequest
-- output: qdrant.ListSnapshotsResponse
-"""
-ListFull(client::SnapshotsBlockingClient, inp::qdrant.ListFullSnapshotsRequest) = ListFull(client.stub, client.controller, inp)
-ListFull(client::SnapshotsClient, inp::qdrant.ListFullSnapshotsRequest, done::Function) = ListFull(client.stub, client.controller, inp, done)
-
-# end service: qdrant.Snapshots
-
 # begin service: qdrant.Raft
 
 export RaftBlockingClient, RaftClient
@@ -405,5 +330,80 @@ AddPeerAsParticipant(client::RaftBlockingClient, inp::qdrant.PeerId) = AddPeerAs
 AddPeerAsParticipant(client::RaftClient, inp::qdrant.PeerId, done::Function) = AddPeerAsParticipant(client.stub, client.controller, inp, done)
 
 # end service: qdrant.Raft
+
+# begin service: qdrant.Snapshots
+
+export SnapshotsBlockingClient, SnapshotsClient
+
+struct SnapshotsBlockingClient
+    controller::gRPCController
+    channel::gRPCChannel
+    stub::SnapshotsBlockingStub
+
+    function SnapshotsBlockingClient(api_base_url::String; kwargs...)
+        controller = gRPCController(; kwargs...)
+        channel = gRPCChannel(api_base_url)
+        stub = SnapshotsBlockingStub(channel)
+        new(controller, channel, stub)
+    end
+end
+
+struct SnapshotsClient
+    controller::gRPCController
+    channel::gRPCChannel
+    stub::SnapshotsStub
+
+    function SnapshotsClient(api_base_url::String; kwargs...)
+        controller = gRPCController(; kwargs...)
+        channel = gRPCChannel(api_base_url)
+        stub = SnapshotsStub(channel)
+        new(controller, channel, stub)
+    end
+end
+
+show(io::IO, client::SnapshotsBlockingClient) = print(io, "SnapshotsBlockingClient(", client.channel.baseurl, ")")
+show(io::IO, client::SnapshotsClient) = print(io, "SnapshotsClient(", client.channel.baseurl, ")")
+
+import .qdrant: Create
+"""
+    Create
+
+- input: qdrant.CreateSnapshotRequest
+- output: qdrant.CreateSnapshotResponse
+"""
+Create(client::SnapshotsBlockingClient, inp::qdrant.CreateSnapshotRequest) = Create(client.stub, client.controller, inp)
+Create(client::SnapshotsClient, inp::qdrant.CreateSnapshotRequest, done::Function) = Create(client.stub, client.controller, inp, done)
+
+import .qdrant: List
+"""
+    List
+
+- input: qdrant.ListSnapshotsRequest
+- output: qdrant.ListSnapshotsResponse
+"""
+List(client::SnapshotsBlockingClient, inp::qdrant.ListSnapshotsRequest) = List(client.stub, client.controller, inp)
+List(client::SnapshotsClient, inp::qdrant.ListSnapshotsRequest, done::Function) = List(client.stub, client.controller, inp, done)
+
+import .qdrant: CreateFull
+"""
+    CreateFull
+
+- input: qdrant.CreateFullSnapshotRequest
+- output: qdrant.CreateSnapshotResponse
+"""
+CreateFull(client::SnapshotsBlockingClient, inp::qdrant.CreateFullSnapshotRequest) = CreateFull(client.stub, client.controller, inp)
+CreateFull(client::SnapshotsClient, inp::qdrant.CreateFullSnapshotRequest, done::Function) = CreateFull(client.stub, client.controller, inp, done)
+
+import .qdrant: ListFull
+"""
+    ListFull
+
+- input: qdrant.ListFullSnapshotsRequest
+- output: qdrant.ListSnapshotsResponse
+"""
+ListFull(client::SnapshotsBlockingClient, inp::qdrant.ListFullSnapshotsRequest) = ListFull(client.stub, client.controller, inp)
+ListFull(client::SnapshotsClient, inp::qdrant.ListFullSnapshotsRequest, done::Function) = ListFull(client.stub, client.controller, inp, done)
+
+# end service: qdrant.Snapshots
 
 end # module QdrantClients

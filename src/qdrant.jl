@@ -5,7 +5,7 @@ module qdrant
   include("json_with_int_pb.jl")
   include("points_pb.jl")
   include("points_service_pb.jl")
-  include("snapshots_service_pb.jl")
   include("raft_service_pb.jl")
+  include("snapshots_service_pb.jl")
   include("services_pb.jl")
 end
