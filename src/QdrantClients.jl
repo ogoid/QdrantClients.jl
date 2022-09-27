@@ -224,6 +224,16 @@ import .qdrant: Search
 Search(client::PointsBlockingClient, inp::qdrant.SearchPoints) = Search(client.stub, client.controller, inp)
 Search(client::PointsClient, inp::qdrant.SearchPoints, done::Function) = Search(client.stub, client.controller, inp, done)
 
+import .qdrant: SearchBatch
+"""
+    SearchBatch
+
+- input: qdrant.SearchBatchPoints
+- output: qdrant.SearchBatchResponse
+"""
+SearchBatch(client::PointsBlockingClient, inp::qdrant.SearchBatchPoints) = SearchBatch(client.stub, client.controller, inp)
+SearchBatch(client::PointsClient, inp::qdrant.SearchBatchPoints, done::Function) = SearchBatch(client.stub, client.controller, inp, done)
+
 import .qdrant: Scroll
 """
     Scroll
@@ -243,6 +253,16 @@ import .qdrant: Recommend
 """
 Recommend(client::PointsBlockingClient, inp::qdrant.RecommendPoints) = Recommend(client.stub, client.controller, inp)
 Recommend(client::PointsClient, inp::qdrant.RecommendPoints, done::Function) = Recommend(client.stub, client.controller, inp, done)
+
+import .qdrant: RecommendBatch
+"""
+    RecommendBatch
+
+- input: qdrant.RecommendBatchPoints
+- output: qdrant.RecommendBatchResponse
+"""
+RecommendBatch(client::PointsBlockingClient, inp::qdrant.RecommendBatchPoints) = RecommendBatch(client.stub, client.controller, inp)
+RecommendBatch(client::PointsClient, inp::qdrant.RecommendBatchPoints, done::Function) = RecommendBatch(client.stub, client.controller, inp, done)
 
 import .qdrant: Count
 """

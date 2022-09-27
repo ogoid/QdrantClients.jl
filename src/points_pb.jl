@@ -7,6 +7,7 @@ const FieldType = (;[
     Symbol("FieldTypeInteger") => Int32(1),
     Symbol("FieldTypeFloat") => Int32(2),
     Symbol("FieldTypeGeo") => Int32(3),
+    Symbol("FieldTypeText") => Int32(4),
 ]...)
 
 const UpdateStatus = (;[
@@ -53,6 +54,46 @@ function Base.getproperty(obj::PointId, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::UInt64
     elseif name === :uuid
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct Vector <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function Vector(; kwargs...)
+        obj = new(meta(Vector), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct Vector
+const __meta_Vector = Ref{ProtoMeta}()
+function meta(::Type{Vector})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_Vector)
+            __meta_Vector[] = target = ProtoMeta(Vector)
+            pack = Symbol[:data]
+            allflds = Pair{Symbol,Union{Type,String}}[:data => Base.Vector{Float32}]
+            meta(target, Vector, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_Vector[]
+    end
+end
+function Base.getproperty(obj::Vector, name::Symbol)
+    if name === :data
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{Float32}
     else
         getfield(obj, name)
     end
@@ -218,9 +259,9 @@ function meta(::Type{CreateFieldIndexCollection})
     ProtoBuf.metalock() do
         if !isassigned(__meta_CreateFieldIndexCollection)
             __meta_CreateFieldIndexCollection[] = target = ProtoMeta(CreateFieldIndexCollection)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString, :field_type => Int32]
-            oneofs = Int[0,1,0,2]
-            oneof_names = Symbol[Symbol("_wait"),Symbol("_field_type")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString, :field_type => Int32, :field_index_params => PayloadIndexParams]
+            oneofs = Int[0,1,0,2,3]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_field_type"),Symbol("_field_index_params")]
             meta(target, CreateFieldIndexCollection, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_CreateFieldIndexCollection[]
@@ -235,6 +276,8 @@ function Base.getproperty(obj::CreateFieldIndexCollection, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :field_type
         return (obj.__protobuf_jl_internal_values[name])::Int32
+    elseif name === :field_index_params
+        return (obj.__protobuf_jl_internal_values[name])::PayloadIndexParams
     else
         getfield(obj, name)
     end
@@ -408,6 +451,211 @@ function Base.getproperty(obj::WithPayloadSelector, name::Symbol)
     end
 end
 
+mutable struct NamedVectors_VectorsEntry <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function NamedVectors_VectorsEntry(; kwargs...)
+        obj = new(meta(NamedVectors_VectorsEntry), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct NamedVectors_VectorsEntry (mapentry)
+const __meta_NamedVectors_VectorsEntry = Ref{ProtoMeta}()
+function meta(::Type{NamedVectors_VectorsEntry})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_NamedVectors_VectorsEntry)
+            __meta_NamedVectors_VectorsEntry[] = target = ProtoMeta(NamedVectors_VectorsEntry)
+            allflds = Pair{Symbol,Union{Type,String}}[:key => AbstractString, :value => Vector]
+            meta(target, NamedVectors_VectorsEntry, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_NamedVectors_VectorsEntry[]
+    end
+end
+function Base.getproperty(obj::NamedVectors_VectorsEntry, name::Symbol)
+    if name === :key
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :value
+        return (obj.__protobuf_jl_internal_values[name])::Vector
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct NamedVectors <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function NamedVectors(; kwargs...)
+        obj = new(meta(NamedVectors), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct NamedVectors
+const __meta_NamedVectors = Ref{ProtoMeta}()
+function meta(::Type{NamedVectors})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_NamedVectors)
+            __meta_NamedVectors[] = target = ProtoMeta(NamedVectors)
+            allflds = Pair{Symbol,Union{Type,String}}[:vectors => Base.Dict{AbstractString,Vector}]
+            meta(target, NamedVectors, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_NamedVectors[]
+    end
+end
+function Base.getproperty(obj::NamedVectors, name::Symbol)
+    if name === :vectors
+        return (obj.__protobuf_jl_internal_values[name])::Base.Dict{AbstractString,Vector}
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct Vectors <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function Vectors(; kwargs...)
+        obj = new(meta(Vectors), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct Vectors
+const __meta_Vectors = Ref{ProtoMeta}()
+function meta(::Type{Vectors})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_Vectors)
+            __meta_Vectors[] = target = ProtoMeta(Vectors)
+            allflds = Pair{Symbol,Union{Type,String}}[:vector => Vector, :vectors => NamedVectors]
+            oneofs = Int[1,1]
+            oneof_names = Symbol[Symbol("vectors_options")]
+            meta(target, Vectors, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_Vectors[]
+    end
+end
+function Base.getproperty(obj::Vectors, name::Symbol)
+    if name === :vector
+        return (obj.__protobuf_jl_internal_values[name])::Vector
+    elseif name === :vectors
+        return (obj.__protobuf_jl_internal_values[name])::NamedVectors
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct VectorsSelector <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function VectorsSelector(; kwargs...)
+        obj = new(meta(VectorsSelector), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct VectorsSelector
+const __meta_VectorsSelector = Ref{ProtoMeta}()
+function meta(::Type{VectorsSelector})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_VectorsSelector)
+            __meta_VectorsSelector[] = target = ProtoMeta(VectorsSelector)
+            allflds = Pair{Symbol,Union{Type,String}}[:names => Base.Vector{AbstractString}]
+            meta(target, VectorsSelector, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_VectorsSelector[]
+    end
+end
+function Base.getproperty(obj::VectorsSelector, name::Symbol)
+    if name === :names
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{AbstractString}
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct WithVectorsSelector <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function WithVectorsSelector(; kwargs...)
+        obj = new(meta(WithVectorsSelector), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct WithVectorsSelector
+const __meta_WithVectorsSelector = Ref{ProtoMeta}()
+function meta(::Type{WithVectorsSelector})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_WithVectorsSelector)
+            __meta_WithVectorsSelector[] = target = ProtoMeta(WithVectorsSelector)
+            allflds = Pair{Symbol,Union{Type,String}}[:enable => Bool, :include => VectorsSelector]
+            oneofs = Int[1,1]
+            oneof_names = Symbol[Symbol("selector_options")]
+            meta(target, WithVectorsSelector, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_WithVectorsSelector[]
+    end
+end
+function Base.getproperty(obj::WithVectorsSelector, name::Symbol)
+    if name === :enable
+        return (obj.__protobuf_jl_internal_values[name])::Bool
+    elseif name === :include
+        return (obj.__protobuf_jl_internal_values[name])::VectorsSelector
+    else
+        getfield(obj, name)
+    end
+end
+
 mutable struct GetPoints <: ProtoType
     __protobuf_jl_internal_meta::ProtoMeta
     __protobuf_jl_internal_values::Dict{Symbol,Any}
@@ -433,10 +681,11 @@ function meta(::Type{GetPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_GetPoints)
             __meta_GetPoints[] = target = ProtoMeta(GetPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :ids => Base.Vector{PointId}, :with_vector => Bool, :with_payload => WithPayloadSelector]
-            oneofs = Int[0,0,1,0]
-            oneof_names = Symbol[Symbol("_with_vector")]
-            meta(target, GetPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+            fnum = Int[1,2,4,5]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :ids => Base.Vector{PointId}, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector]
+            oneofs = Int[0,0,0,1]
+            oneof_names = Symbol[Symbol("_with_vectors")]
+            meta(target, GetPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_GetPoints[]
     end
@@ -446,10 +695,10 @@ function Base.getproperty(obj::GetPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :ids
         return (obj.__protobuf_jl_internal_values[name])::Base.Vector{PointId}
-    elseif name === :with_vector
-        return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :with_payload
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
+    elseif name === :with_vectors
+        return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
     else
         getfield(obj, name)
     end
@@ -644,9 +893,11 @@ function meta(::Type{ScoredPoint})
     ProtoBuf.metalock() do
         if !isassigned(__meta_ScoredPoint)
             __meta_ScoredPoint[] = target = ProtoMeta(ScoredPoint)
-            pack = Symbol[:vector]
-            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :payload => Base.Dict{AbstractString,Value}, :score => Float32, :vector => Base.Vector{Float32}, :version => UInt64]
-            meta(target, ScoredPoint, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+            fnum = Int[1,2,3,5,6]
+            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :payload => Base.Dict{AbstractString,Value}, :score => Float32, :version => UInt64, :vectors => Vectors]
+            oneofs = Int[0,0,0,0,1]
+            oneof_names = Symbol[Symbol("_vectors")]
+            meta(target, ScoredPoint, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_ScoredPoint[]
     end
@@ -658,10 +909,10 @@ function Base.getproperty(obj::ScoredPoint, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Base.Dict{AbstractString,Value}
     elseif name === :score
         return (obj.__protobuf_jl_internal_values[name])::Float32
-    elseif name === :vector
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{Float32}
     elseif name === :version
         return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :vectors
+        return (obj.__protobuf_jl_internal_values[name])::Vectors
     else
         getfield(obj, name)
     end
@@ -701,6 +952,86 @@ end
 function Base.getproperty(obj::SearchResponse, name::Symbol)
     if name === :result
         return (obj.__protobuf_jl_internal_values[name])::Base.Vector{ScoredPoint}
+    elseif name === :time
+        return (obj.__protobuf_jl_internal_values[name])::Float64
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct BatchResult <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function BatchResult(; kwargs...)
+        obj = new(meta(BatchResult), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct BatchResult
+const __meta_BatchResult = Ref{ProtoMeta}()
+function meta(::Type{BatchResult})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_BatchResult)
+            __meta_BatchResult[] = target = ProtoMeta(BatchResult)
+            allflds = Pair{Symbol,Union{Type,String}}[:result => Base.Vector{ScoredPoint}]
+            meta(target, BatchResult, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_BatchResult[]
+    end
+end
+function Base.getproperty(obj::BatchResult, name::Symbol)
+    if name === :result
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{ScoredPoint}
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct SearchBatchResponse <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function SearchBatchResponse(; kwargs...)
+        obj = new(meta(SearchBatchResponse), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct SearchBatchResponse
+const __meta_SearchBatchResponse = Ref{ProtoMeta}()
+function meta(::Type{SearchBatchResponse})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_SearchBatchResponse)
+            __meta_SearchBatchResponse[] = target = ProtoMeta(SearchBatchResponse)
+            allflds = Pair{Symbol,Union{Type,String}}[:result => Base.Vector{BatchResult}, :time => Float64]
+            meta(target, SearchBatchResponse, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_SearchBatchResponse[]
+    end
+end
+function Base.getproperty(obj::SearchBatchResponse, name::Symbol)
+    if name === :result
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{BatchResult}
     elseif name === :time
         return (obj.__protobuf_jl_internal_values[name])::Float64
     else
@@ -854,9 +1185,11 @@ function meta(::Type{RetrievedPoint})
     ProtoBuf.metalock() do
         if !isassigned(__meta_RetrievedPoint)
             __meta_RetrievedPoint[] = target = ProtoMeta(RetrievedPoint)
-            pack = Symbol[:vector]
-            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :payload => Base.Dict{AbstractString,Value}, :vector => Base.Vector{Float32}]
-            meta(target, RetrievedPoint, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+            fnum = Int[1,2,4]
+            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :payload => Base.Dict{AbstractString,Value}, :vectors => Vectors]
+            oneofs = Int[0,0,1]
+            oneof_names = Symbol[Symbol("_vectors")]
+            meta(target, RetrievedPoint, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_RetrievedPoint[]
     end
@@ -866,8 +1199,8 @@ function Base.getproperty(obj::RetrievedPoint, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::PointId
     elseif name === :payload
         return (obj.__protobuf_jl_internal_values[name])::Base.Dict{AbstractString,Value}
-    elseif name === :vector
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{Float32}
+    elseif name === :vectors
+        return (obj.__protobuf_jl_internal_values[name])::Vectors
     else
         getfield(obj, name)
     end
@@ -1000,6 +1333,47 @@ function Base.getproperty(obj::RecommendResponse, name::Symbol)
     end
 end
 
+mutable struct RecommendBatchResponse <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function RecommendBatchResponse(; kwargs...)
+        obj = new(meta(RecommendBatchResponse), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct RecommendBatchResponse
+const __meta_RecommendBatchResponse = Ref{ProtoMeta}()
+function meta(::Type{RecommendBatchResponse})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_RecommendBatchResponse)
+            __meta_RecommendBatchResponse[] = target = ProtoMeta(RecommendBatchResponse)
+            allflds = Pair{Symbol,Union{Type,String}}[:result => Base.Vector{BatchResult}, :time => Float64]
+            meta(target, RecommendBatchResponse, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_RecommendBatchResponse[]
+    end
+end
+function Base.getproperty(obj::RecommendBatchResponse, name::Symbol)
+    if name === :result
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{BatchResult}
+    elseif name === :time
+        return (obj.__protobuf_jl_internal_values[name])::Float64
+    else
+        getfield(obj, name)
+    end
+end
+
 mutable struct IsEmptyCondition <: ProtoType
     __protobuf_jl_internal_meta::ProtoMeta
     __protobuf_jl_internal_values::Dict{Symbol,Any}
@@ -1103,8 +1477,8 @@ function meta(::Type{Match})
     ProtoBuf.metalock() do
         if !isassigned(__meta_Match)
             __meta_Match[] = target = ProtoMeta(Match)
-            allflds = Pair{Symbol,Union{Type,String}}[:keyword => AbstractString, :integer => Int64, :boolean => Bool]
-            oneofs = Int[1,1,1]
+            allflds = Pair{Symbol,Union{Type,String}}[:keyword => AbstractString, :integer => Int64, :boolean => Bool, :text => AbstractString]
+            oneofs = Int[1,1,1,1]
             oneof_names = Symbol[Symbol("match_value")]
             meta(target, Match, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
@@ -1118,6 +1492,8 @@ function Base.getproperty(obj::Match, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Int64
     elseif name === :boolean
         return (obj.__protobuf_jl_internal_values[name])::Bool
+    elseif name === :text
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
     else
         getfield(obj, name)
     end
@@ -1322,9 +1698,11 @@ function meta(::Type{PointStruct})
     ProtoBuf.metalock() do
         if !isassigned(__meta_PointStruct)
             __meta_PointStruct[] = target = ProtoMeta(PointStruct)
-            pack = Symbol[:vector]
-            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :vector => Base.Vector{Float32}, :payload => Base.Dict{AbstractString,Value}]
-            meta(target, PointStruct, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+            fnum = Int[1,3,4]
+            allflds = Pair{Symbol,Union{Type,String}}[:id => PointId, :payload => Base.Dict{AbstractString,Value}, :vectors => Vectors]
+            oneofs = Int[0,0,1]
+            oneof_names = Symbol[Symbol("_vectors")]
+            meta(target, PointStruct, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_PointStruct[]
     end
@@ -1332,10 +1710,10 @@ end
 function Base.getproperty(obj::PointStruct, name::Symbol)
     if name === :id
         return (obj.__protobuf_jl_internal_values[name])::PointId
-    elseif name === :vector
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{Float32}
     elseif name === :payload
         return (obj.__protobuf_jl_internal_values[name])::Base.Dict{AbstractString,Value}
+    elseif name === :vectors
+        return (obj.__protobuf_jl_internal_values[name])::Vectors
     else
         getfield(obj, name)
     end
@@ -1673,11 +2051,12 @@ function meta(::Type{SearchPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_SearchPoints)
             __meta_SearchPoints[] = target = ProtoMeta(SearchPoints)
+            fnum = Int[1,2,3,4,6,7,8,9,10,11]
             pack = Symbol[:vector]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :vector => Base.Vector{Float32}, :filter => "Filter", :limit => UInt64, :with_vector => Bool, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64]
-            oneofs = Int[0,0,0,0,1,0,0,2,3]
-            oneof_names = Symbol[Symbol("_with_vector"),Symbol("_score_threshold"),Symbol("_offset")]
-            meta(target, SearchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :vector => Base.Vector{Float32}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :vector_name => AbstractString, :with_vectors => WithVectorsSelector]
+            oneofs = Int[0,0,0,0,0,0,1,2,3,4]
+            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_vector_name"),Symbol("_with_vectors")]
+            meta(target, SearchPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_SearchPoints[]
     end
@@ -1691,8 +2070,6 @@ function Base.getproperty(obj::SearchPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Any
     elseif name === :limit
         return (obj.__protobuf_jl_internal_values[name])::UInt64
-    elseif name === :with_vector
-        return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :with_payload
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
     elseif name === :params
@@ -1701,6 +2078,51 @@ function Base.getproperty(obj::SearchPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Float32
     elseif name === :offset
         return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :vector_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :with_vectors
+        return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct SearchBatchPoints <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function SearchBatchPoints(; kwargs...)
+        obj = new(meta(SearchBatchPoints), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct SearchBatchPoints (has cyclic type dependency)
+const __meta_SearchBatchPoints = Ref{ProtoMeta}()
+function meta(::Type{SearchBatchPoints})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_SearchBatchPoints)
+            __meta_SearchBatchPoints[] = target = ProtoMeta(SearchBatchPoints)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :search_points => Base.Vector{SearchPoints}]
+            meta(target, SearchBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_SearchBatchPoints[]
+    end
+end
+function Base.getproperty(obj::SearchBatchPoints, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :search_points
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{SearchPoints}
     else
         getfield(obj, name)
     end
@@ -1731,10 +2153,11 @@ function meta(::Type{ScrollPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_ScrollPoints)
             __meta_ScrollPoints[] = target = ProtoMeta(ScrollPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :filter => "Filter", :offset => PointId, :limit => UInt32, :with_vector => Bool, :with_payload => WithPayloadSelector]
-            oneofs = Int[0,0,1,2,3,0]
-            oneof_names = Symbol[Symbol("_offset"),Symbol("_limit"),Symbol("_with_vector")]
-            meta(target, ScrollPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+            fnum = Int[1,2,3,4,6,7]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :filter => "Filter", :offset => PointId, :limit => UInt32, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector]
+            oneofs = Int[0,0,1,2,0,3]
+            oneof_names = Symbol[Symbol("_offset"),Symbol("_limit"),Symbol("_with_vectors")]
+            meta(target, ScrollPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_ScrollPoints[]
     end
@@ -1748,10 +2171,10 @@ function Base.getproperty(obj::ScrollPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::PointId
     elseif name === :limit
         return (obj.__protobuf_jl_internal_values[name])::UInt32
-    elseif name === :with_vector
-        return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :with_payload
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
+    elseif name === :with_vectors
+        return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
     else
         getfield(obj, name)
     end
@@ -1782,10 +2205,11 @@ function meta(::Type{RecommendPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_RecommendPoints)
             __meta_RecommendPoints[] = target = ProtoMeta(RecommendPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :positive => Base.Vector{PointId}, :negative => Base.Vector{PointId}, :filter => "Filter", :limit => UInt64, :with_vector => Bool, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64]
-            oneofs = Int[0,0,0,0,0,1,0,0,2,3]
-            oneof_names = Symbol[Symbol("_with_vector"),Symbol("_score_threshold"),Symbol("_offset")]
-            meta(target, RecommendPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+            fnum = Int[1,2,3,4,5,7,8,9,10,11,12]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :positive => Base.Vector{PointId}, :negative => Base.Vector{PointId}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :_using => AbstractString, :with_vectors => WithVectorsSelector]
+            oneofs = Int[0,0,0,0,0,0,0,1,2,3,4]
+            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_using"),Symbol("_with_vectors")]
+            meta(target, RecommendPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_RecommendPoints[]
     end
@@ -1801,8 +2225,6 @@ function Base.getproperty(obj::RecommendPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Any
     elseif name === :limit
         return (obj.__protobuf_jl_internal_values[name])::UInt64
-    elseif name === :with_vector
-        return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :with_payload
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
     elseif name === :params
@@ -1811,6 +2233,51 @@ function Base.getproperty(obj::RecommendPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Float32
     elseif name === :offset
         return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :_using
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :with_vectors
+        return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct RecommendBatchPoints <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function RecommendBatchPoints(; kwargs...)
+        obj = new(meta(RecommendBatchPoints), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct RecommendBatchPoints (has cyclic type dependency)
+const __meta_RecommendBatchPoints = Ref{ProtoMeta}()
+function meta(::Type{RecommendBatchPoints})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_RecommendBatchPoints)
+            __meta_RecommendBatchPoints[] = target = ProtoMeta(RecommendBatchPoints)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :recommend_points => Base.Vector{RecommendPoints}]
+            meta(target, RecommendBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_RecommendBatchPoints[]
+    end
+end
+function Base.getproperty(obj::RecommendBatchPoints, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :recommend_points
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{RecommendPoints}
     else
         getfield(obj, name)
     end
@@ -1929,7 +2396,7 @@ function meta(::Type{Condition})
     ProtoBuf.metalock() do
         if !isassigned(__meta_Condition)
             __meta_Condition[] = target = ProtoMeta(Condition)
-            allflds = Pair{Symbol,Union{Type,String}}[:field => FieldCondition, :isEmpty => IsEmptyCondition, :hasId => HasIdCondition, :filter => Filter]
+            allflds = Pair{Symbol,Union{Type,String}}[:field => FieldCondition, :is_empty => IsEmptyCondition, :has_id => HasIdCondition, :filter => Filter]
             oneofs = Int[1,1,1,1]
             oneof_names = Symbol[Symbol("condition_one_of")]
             meta(target, Condition, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
@@ -1940,9 +2407,9 @@ end
 function Base.getproperty(obj::Condition, name::Symbol)
     if name === :field
         return (obj.__protobuf_jl_internal_values[name])::FieldCondition
-    elseif name === :isEmpty
+    elseif name === :is_empty
         return (obj.__protobuf_jl_internal_values[name])::IsEmptyCondition
-    elseif name === :hasId
+    elseif name === :has_id
         return (obj.__protobuf_jl_internal_values[name])::HasIdCondition
     elseif name === :filter
         return (obj.__protobuf_jl_internal_values[name])::Filter
@@ -1994,5 +2461,5 @@ function Base.getproperty(obj::PointsSelector, name::Symbol)
     end
 end
 
-export FieldType, UpdateStatus, PointId, UpsertPoints, DeletePoints, GetPoints, SetPayloadPoints_PayloadEntry, SetPayloadPoints, DeletePayloadPoints, ClearPayloadPoints, CreateFieldIndexCollection, DeleteFieldIndexCollection, PayloadIncludeSelector, PayloadExcludeSelector, WithPayloadSelector, SearchParams, SearchPoints, ScrollPoints, RecommendPoints, CountPoints, PointsOperationResponse, UpdateResult, ScoredPoint_PayloadEntry, ScoredPoint, SearchResponse, CountResponse, ScrollResponse, CountResult, RetrievedPoint_PayloadEntry, RetrievedPoint, GetResponse, RecommendResponse, Filter, Condition, IsEmptyCondition, HasIdCondition, FieldCondition, Match, Range, GeoBoundingBox, GeoRadius, ValuesCount, PointsSelector, PointsIdsList, PointStruct_PayloadEntry, PointStruct, GeoPoint, DeletePoints, ClearPayloadPoints, SearchPoints, ScrollPoints, RecommendPoints, CountPoints, Filter, Condition, PointsSelector
-# mapentries: "SetPayloadPoints_PayloadEntry" => ("AbstractString", "Value"), "RetrievedPoint_PayloadEntry" => ("AbstractString", "Value"), "PointStruct_PayloadEntry" => ("AbstractString", "Value"), "ScoredPoint_PayloadEntry" => ("AbstractString", "Value")
+export FieldType, UpdateStatus, PointId, Vector, UpsertPoints, DeletePoints, GetPoints, SetPayloadPoints_PayloadEntry, SetPayloadPoints, DeletePayloadPoints, ClearPayloadPoints, CreateFieldIndexCollection, DeleteFieldIndexCollection, PayloadIncludeSelector, PayloadExcludeSelector, WithPayloadSelector, NamedVectors_VectorsEntry, NamedVectors, Vectors, VectorsSelector, WithVectorsSelector, SearchParams, SearchPoints, SearchBatchPoints, ScrollPoints, RecommendPoints, RecommendBatchPoints, CountPoints, PointsOperationResponse, UpdateResult, ScoredPoint_PayloadEntry, ScoredPoint, SearchResponse, BatchResult, SearchBatchResponse, CountResponse, ScrollResponse, CountResult, RetrievedPoint_PayloadEntry, RetrievedPoint, GetResponse, RecommendResponse, RecommendBatchResponse, Filter, Condition, IsEmptyCondition, HasIdCondition, FieldCondition, Match, Range, GeoBoundingBox, GeoRadius, ValuesCount, PointsSelector, PointsIdsList, PointStruct_PayloadEntry, PointStruct, GeoPoint, DeletePoints, ClearPayloadPoints, SearchPoints, SearchBatchPoints, ScrollPoints, RecommendPoints, RecommendBatchPoints, CountPoints, Filter, Condition, PointsSelector
+# mapentries: "SetPayloadPoints_PayloadEntry" => ("AbstractString", "Value"), "RetrievedPoint_PayloadEntry" => ("AbstractString", "Value"), "NamedVectors_VectorsEntry" => ("AbstractString", "Vector"), "PointStruct_PayloadEntry" => ("AbstractString", "Value"), "ScoredPoint_PayloadEntry" => ("AbstractString", "Value")

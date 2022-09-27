@@ -14,9 +14,11 @@ const _Points_methods = MethodDescriptor[
         MethodDescriptor("CreateFieldIndex", 7, CreateFieldIndexCollection, PointsOperationResponse),
         MethodDescriptor("DeleteFieldIndex", 8, DeleteFieldIndexCollection, PointsOperationResponse),
         MethodDescriptor("Search", 9, SearchPoints, SearchResponse),
-        MethodDescriptor("Scroll", 10, ScrollPoints, ScrollResponse),
-        MethodDescriptor("Recommend", 11, RecommendPoints, RecommendResponse),
-        MethodDescriptor("Count", 12, CountPoints, CountResponse)
+        MethodDescriptor("SearchBatch", 10, SearchBatchPoints, SearchBatchResponse),
+        MethodDescriptor("Scroll", 11, ScrollPoints, ScrollResponse),
+        MethodDescriptor("Recommend", 12, RecommendPoints, RecommendResponse),
+        MethodDescriptor("RecommendBatch", 13, RecommendBatchPoints, RecommendBatchResponse),
+        MethodDescriptor("Count", 14, CountPoints, CountResponse)
     ] # const _Points_methods
 const _Points_desc = ServiceDescriptor("qdrant.Points", 1, _Points_methods)
 
@@ -59,13 +61,19 @@ DeleteFieldIndex(stub::PointsBlockingStub, controller::ProtoRpcController, inp::
 Search(stub::PointsStub, controller::ProtoRpcController, inp::SearchPoints, done::Function) = call_method(stub.impl, _Points_methods[9], controller, inp, done)
 Search(stub::PointsBlockingStub, controller::ProtoRpcController, inp::SearchPoints) = call_method(stub.impl, _Points_methods[9], controller, inp)
 
-Scroll(stub::PointsStub, controller::ProtoRpcController, inp::ScrollPoints, done::Function) = call_method(stub.impl, _Points_methods[10], controller, inp, done)
-Scroll(stub::PointsBlockingStub, controller::ProtoRpcController, inp::ScrollPoints) = call_method(stub.impl, _Points_methods[10], controller, inp)
+SearchBatch(stub::PointsStub, controller::ProtoRpcController, inp::SearchBatchPoints, done::Function) = call_method(stub.impl, _Points_methods[10], controller, inp, done)
+SearchBatch(stub::PointsBlockingStub, controller::ProtoRpcController, inp::SearchBatchPoints) = call_method(stub.impl, _Points_methods[10], controller, inp)
 
-Recommend(stub::PointsStub, controller::ProtoRpcController, inp::RecommendPoints, done::Function) = call_method(stub.impl, _Points_methods[11], controller, inp, done)
-Recommend(stub::PointsBlockingStub, controller::ProtoRpcController, inp::RecommendPoints) = call_method(stub.impl, _Points_methods[11], controller, inp)
+Scroll(stub::PointsStub, controller::ProtoRpcController, inp::ScrollPoints, done::Function) = call_method(stub.impl, _Points_methods[11], controller, inp, done)
+Scroll(stub::PointsBlockingStub, controller::ProtoRpcController, inp::ScrollPoints) = call_method(stub.impl, _Points_methods[11], controller, inp)
 
-Count(stub::PointsStub, controller::ProtoRpcController, inp::CountPoints, done::Function) = call_method(stub.impl, _Points_methods[12], controller, inp, done)
-Count(stub::PointsBlockingStub, controller::ProtoRpcController, inp::CountPoints) = call_method(stub.impl, _Points_methods[12], controller, inp)
+Recommend(stub::PointsStub, controller::ProtoRpcController, inp::RecommendPoints, done::Function) = call_method(stub.impl, _Points_methods[12], controller, inp, done)
+Recommend(stub::PointsBlockingStub, controller::ProtoRpcController, inp::RecommendPoints) = call_method(stub.impl, _Points_methods[12], controller, inp)
 
-export Points, PointsStub, PointsBlockingStub, Upsert, Delete, Get, SetPayload, DeletePayload, ClearPayload, CreateFieldIndex, DeleteFieldIndex, Search, Scroll, Recommend, Count
+RecommendBatch(stub::PointsStub, controller::ProtoRpcController, inp::RecommendBatchPoints, done::Function) = call_method(stub.impl, _Points_methods[13], controller, inp, done)
+RecommendBatch(stub::PointsBlockingStub, controller::ProtoRpcController, inp::RecommendBatchPoints) = call_method(stub.impl, _Points_methods[13], controller, inp)
+
+Count(stub::PointsStub, controller::ProtoRpcController, inp::CountPoints, done::Function) = call_method(stub.impl, _Points_methods[14], controller, inp, done)
+Count(stub::PointsBlockingStub, controller::ProtoRpcController, inp::CountPoints) = call_method(stub.impl, _Points_methods[14], controller, inp)
+
+export Points, PointsStub, PointsBlockingStub, Upsert, Delete, Get, SetPayload, DeletePayload, ClearPayload, CreateFieldIndex, DeleteFieldIndex, Search, SearchBatch, Scroll, Recommend, RecommendBatch, Count
