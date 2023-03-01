@@ -413,9 +413,9 @@ function meta(::Type{HnswConfigDiff})
     ProtoBuf.metalock() do
         if !isassigned(__meta_HnswConfigDiff)
             __meta_HnswConfigDiff[] = target = ProtoMeta(HnswConfigDiff)
-            allflds = Pair{Symbol,Union{Type,String}}[:m => UInt64, :ef_construct => UInt64, :full_scan_threshold => UInt64, :max_indexing_threads => UInt64]
-            oneofs = Int[1,2,3,4]
-            oneof_names = Symbol[Symbol("_m"),Symbol("_ef_construct"),Symbol("_full_scan_threshold"),Symbol("_max_indexing_threads")]
+            allflds = Pair{Symbol,Union{Type,String}}[:m => UInt64, :ef_construct => UInt64, :full_scan_threshold => UInt64, :max_indexing_threads => UInt64, :on_disk => Bool, :payload_m => UInt64]
+            oneofs = Int[1,2,3,4,5,6]
+            oneof_names = Symbol[Symbol("_m"),Symbol("_ef_construct"),Symbol("_full_scan_threshold"),Symbol("_max_indexing_threads"),Symbol("_on_disk"),Symbol("_payload_m")]
             meta(target, HnswConfigDiff, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_HnswConfigDiff[]
@@ -429,6 +429,10 @@ function Base.getproperty(obj::HnswConfigDiff, name::Symbol)
     elseif name === :full_scan_threshold
         return (obj.__protobuf_jl_internal_values[name])::UInt64
     elseif name === :max_indexing_threads
+        return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :on_disk
+        return (obj.__protobuf_jl_internal_values[name])::Bool
+    elseif name === :payload_m
         return (obj.__protobuf_jl_internal_values[name])::UInt64
     else
         getfield(obj, name)
@@ -558,10 +562,10 @@ function meta(::Type{CreateCollection})
     ProtoBuf.metalock() do
         if !isassigned(__meta_CreateCollection)
             __meta_CreateCollection[] = target = ProtoMeta(CreateCollection)
-            fnum = Int[1,4,5,6,7,8,9,10]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :hnsw_config => HnswConfigDiff, :wal_config => WalConfigDiff, :optimizers_config => OptimizersConfigDiff, :shard_number => UInt32, :on_disk_payload => Bool, :timeout => UInt64, :vectors_config => VectorsConfig]
-            oneofs = Int[0,1,2,3,4,5,6,7]
-            oneof_names = Symbol[Symbol("_hnsw_config"),Symbol("_wal_config"),Symbol("_optimizers_config"),Symbol("_shard_number"),Symbol("_on_disk_payload"),Symbol("_timeout"),Symbol("_vectors_config")]
+            fnum = Int[1,4,5,6,7,8,9,10,11,12,13]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :hnsw_config => HnswConfigDiff, :wal_config => WalConfigDiff, :optimizers_config => OptimizersConfigDiff, :shard_number => UInt32, :on_disk_payload => Bool, :timeout => UInt64, :vectors_config => VectorsConfig, :replication_factor => UInt32, :write_consistency_factor => UInt32, :init_from_collection => AbstractString]
+            oneofs = Int[0,1,2,3,4,5,6,7,8,9,10]
+            oneof_names = Symbol[Symbol("_hnsw_config"),Symbol("_wal_config"),Symbol("_optimizers_config"),Symbol("_shard_number"),Symbol("_on_disk_payload"),Symbol("_timeout"),Symbol("_vectors_config"),Symbol("_replication_factor"),Symbol("_write_consistency_factor"),Symbol("_init_from_collection")]
             meta(target, CreateCollection, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_CreateCollection[]
@@ -584,51 +588,12 @@ function Base.getproperty(obj::CreateCollection, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::UInt64
     elseif name === :vectors_config
         return (obj.__protobuf_jl_internal_values[name])::VectorsConfig
-    else
-        getfield(obj, name)
-    end
-end
-
-mutable struct UpdateCollection <: ProtoType
-    __protobuf_jl_internal_meta::ProtoMeta
-    __protobuf_jl_internal_values::Dict{Symbol,Any}
-    __protobuf_jl_internal_defaultset::Set{Symbol}
-
-    function UpdateCollection(; kwargs...)
-        obj = new(meta(UpdateCollection), Dict{Symbol,Any}(), Set{Symbol}())
-        values = obj.__protobuf_jl_internal_values
-        symdict = obj.__protobuf_jl_internal_meta.symdict
-        for nv in kwargs
-            fldname, fldval = nv
-            fldtype = symdict[fldname].jtyp
-            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
-            if fldval !== nothing
-                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
-            end
-        end
-        obj
-    end
-end # mutable struct UpdateCollection
-const __meta_UpdateCollection = Ref{ProtoMeta}()
-function meta(::Type{UpdateCollection})
-    ProtoBuf.metalock() do
-        if !isassigned(__meta_UpdateCollection)
-            __meta_UpdateCollection[] = target = ProtoMeta(UpdateCollection)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :optimizers_config => OptimizersConfigDiff, :timeout => UInt64]
-            oneofs = Int[0,1,2]
-            oneof_names = Symbol[Symbol("_optimizers_config"),Symbol("_timeout")]
-            meta(target, UpdateCollection, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
-        end
-        __meta_UpdateCollection[]
-    end
-end
-function Base.getproperty(obj::UpdateCollection, name::Symbol)
-    if name === :collection_name
+    elseif name === :replication_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    elseif name === :write_consistency_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    elseif name === :init_from_collection
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
-    elseif name === :optimizers_config
-        return (obj.__protobuf_jl_internal_values[name])::OptimizersConfigDiff
-    elseif name === :timeout
-        return (obj.__protobuf_jl_internal_values[name])::UInt64
     else
         getfield(obj, name)
     end
@@ -743,10 +708,10 @@ function meta(::Type{CollectionParams})
     ProtoBuf.metalock() do
         if !isassigned(__meta_CollectionParams)
             __meta_CollectionParams[] = target = ProtoMeta(CollectionParams)
-            fnum = Int[3,4,5]
-            allflds = Pair{Symbol,Union{Type,String}}[:shard_number => UInt32, :on_disk_payload => Bool, :vectors_config => VectorsConfig]
-            oneofs = Int[0,0,1]
-            oneof_names = Symbol[Symbol("_vectors_config")]
+            fnum = Int[3,4,5,6,7]
+            allflds = Pair{Symbol,Union{Type,String}}[:shard_number => UInt32, :on_disk_payload => Bool, :vectors_config => VectorsConfig, :replication_factor => UInt32, :write_consistency_factor => UInt32]
+            oneofs = Int[0,0,1,2,3]
+            oneof_names = Symbol[Symbol("_vectors_config"),Symbol("_replication_factor"),Symbol("_write_consistency_factor")]
             meta(target, CollectionParams, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_CollectionParams[]
@@ -759,6 +724,100 @@ function Base.getproperty(obj::CollectionParams, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :vectors_config
         return (obj.__protobuf_jl_internal_values[name])::VectorsConfig
+    elseif name === :replication_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    elseif name === :write_consistency_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct CollectionParamsDiff <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function CollectionParamsDiff(; kwargs...)
+        obj = new(meta(CollectionParamsDiff), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct CollectionParamsDiff
+const __meta_CollectionParamsDiff = Ref{ProtoMeta}()
+function meta(::Type{CollectionParamsDiff})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_CollectionParamsDiff)
+            __meta_CollectionParamsDiff[] = target = ProtoMeta(CollectionParamsDiff)
+            allflds = Pair{Symbol,Union{Type,String}}[:replication_factor => UInt32, :write_consistency_factor => UInt32]
+            oneofs = Int[1,2]
+            oneof_names = Symbol[Symbol("_replication_factor"),Symbol("_write_consistency_factor")]
+            meta(target, CollectionParamsDiff, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_CollectionParamsDiff[]
+    end
+end
+function Base.getproperty(obj::CollectionParamsDiff, name::Symbol)
+    if name === :replication_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    elseif name === :write_consistency_factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt32
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct UpdateCollection <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function UpdateCollection(; kwargs...)
+        obj = new(meta(UpdateCollection), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct UpdateCollection
+const __meta_UpdateCollection = Ref{ProtoMeta}()
+function meta(::Type{UpdateCollection})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_UpdateCollection)
+            __meta_UpdateCollection[] = target = ProtoMeta(UpdateCollection)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :optimizers_config => OptimizersConfigDiff, :timeout => UInt64, :params => CollectionParamsDiff]
+            oneofs = Int[0,1,2,3]
+            oneof_names = Symbol[Symbol("_optimizers_config"),Symbol("_timeout"),Symbol("_params")]
+            meta(target, UpdateCollection, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_UpdateCollection[]
+    end
+end
+function Base.getproperty(obj::UpdateCollection, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :optimizers_config
+        return (obj.__protobuf_jl_internal_values[name])::OptimizersConfigDiff
+    elseif name === :timeout
+        return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :params
+        return (obj.__protobuf_jl_internal_values[name])::CollectionParamsDiff
     else
         getfield(obj, name)
     end
@@ -922,9 +981,9 @@ function meta(::Type{PayloadSchemaInfo})
     ProtoBuf.metalock() do
         if !isassigned(__meta_PayloadSchemaInfo)
             __meta_PayloadSchemaInfo[] = target = ProtoMeta(PayloadSchemaInfo)
-            allflds = Pair{Symbol,Union{Type,String}}[:data_type => Int32, :params => PayloadIndexParams]
-            oneofs = Int[0,1]
-            oneof_names = Symbol[Symbol("_params")]
+            allflds = Pair{Symbol,Union{Type,String}}[:data_type => Int32, :params => PayloadIndexParams, :points => UInt64]
+            oneofs = Int[0,1,2]
+            oneof_names = Symbol[Symbol("_params"),Symbol("_points")]
             meta(target, PayloadSchemaInfo, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_PayloadSchemaInfo[]
@@ -935,6 +994,8 @@ function Base.getproperty(obj::PayloadSchemaInfo, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Int32
     elseif name === :params
         return (obj.__protobuf_jl_internal_values[name])::PayloadIndexParams
+    elseif name === :points
+        return (obj.__protobuf_jl_internal_values[name])::UInt64
     else
         getfield(obj, name)
     end
@@ -1287,5 +1348,158 @@ function Base.getproperty(obj::ChangeAliases, name::Symbol)
     end
 end
 
-export Distance, CollectionStatus, PayloadSchemaType, TokenizerType, VectorParams, VectorParamsMap_MapEntry, VectorParamsMap, VectorsConfig, GetCollectionInfoRequest, ListCollectionsRequest, CollectionDescription, GetCollectionInfoResponse, ListCollectionsResponse, OptimizerStatus, HnswConfigDiff, WalConfigDiff, OptimizersConfigDiff, CreateCollection, UpdateCollection, DeleteCollection, CollectionOperationResponse, CollectionParams, CollectionConfig, TextIndexParams, PayloadIndexParams, PayloadSchemaInfo, CollectionInfo_PayloadSchemaEntry, CollectionInfo, ChangeAliases, AliasOperations, CreateAlias, RenameAlias, DeleteAlias
+mutable struct ListAliasesRequest <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function ListAliasesRequest(; kwargs...)
+        obj = new(meta(ListAliasesRequest), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct ListAliasesRequest
+const __meta_ListAliasesRequest = Ref{ProtoMeta}()
+function meta(::Type{ListAliasesRequest})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_ListAliasesRequest)
+            __meta_ListAliasesRequest[] = target = ProtoMeta(ListAliasesRequest)
+            allflds = Pair{Symbol,Union{Type,String}}[]
+            meta(target, ListAliasesRequest, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_ListAliasesRequest[]
+    end
+end
+
+mutable struct ListCollectionAliasesRequest <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function ListCollectionAliasesRequest(; kwargs...)
+        obj = new(meta(ListCollectionAliasesRequest), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct ListCollectionAliasesRequest
+const __meta_ListCollectionAliasesRequest = Ref{ProtoMeta}()
+function meta(::Type{ListCollectionAliasesRequest})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_ListCollectionAliasesRequest)
+            __meta_ListCollectionAliasesRequest[] = target = ProtoMeta(ListCollectionAliasesRequest)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString]
+            meta(target, ListCollectionAliasesRequest, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_ListCollectionAliasesRequest[]
+    end
+end
+function Base.getproperty(obj::ListCollectionAliasesRequest, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct AliasDescription <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function AliasDescription(; kwargs...)
+        obj = new(meta(AliasDescription), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct AliasDescription
+const __meta_AliasDescription = Ref{ProtoMeta}()
+function meta(::Type{AliasDescription})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_AliasDescription)
+            __meta_AliasDescription[] = target = ProtoMeta(AliasDescription)
+            allflds = Pair{Symbol,Union{Type,String}}[:alias_name => AbstractString, :collection_name => AbstractString]
+            meta(target, AliasDescription, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_AliasDescription[]
+    end
+end
+function Base.getproperty(obj::AliasDescription, name::Symbol)
+    if name === :alias_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct ListAliasesResponse <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function ListAliasesResponse(; kwargs...)
+        obj = new(meta(ListAliasesResponse), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct ListAliasesResponse
+const __meta_ListAliasesResponse = Ref{ProtoMeta}()
+function meta(::Type{ListAliasesResponse})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_ListAliasesResponse)
+            __meta_ListAliasesResponse[] = target = ProtoMeta(ListAliasesResponse)
+            allflds = Pair{Symbol,Union{Type,String}}[:aliases => Base.Vector{AliasDescription}, :time => Float64]
+            meta(target, ListAliasesResponse, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_ListAliasesResponse[]
+    end
+end
+function Base.getproperty(obj::ListAliasesResponse, name::Symbol)
+    if name === :aliases
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{AliasDescription}
+    elseif name === :time
+        return (obj.__protobuf_jl_internal_values[name])::Float64
+    else
+        getfield(obj, name)
+    end
+end
+
+export Distance, CollectionStatus, PayloadSchemaType, TokenizerType, VectorParams, VectorParamsMap_MapEntry, VectorParamsMap, VectorsConfig, GetCollectionInfoRequest, ListCollectionsRequest, CollectionDescription, GetCollectionInfoResponse, ListCollectionsResponse, OptimizerStatus, HnswConfigDiff, WalConfigDiff, OptimizersConfigDiff, CreateCollection, UpdateCollection, DeleteCollection, CollectionOperationResponse, CollectionParams, CollectionParamsDiff, CollectionConfig, TextIndexParams, PayloadIndexParams, PayloadSchemaInfo, CollectionInfo_PayloadSchemaEntry, CollectionInfo, ChangeAliases, AliasOperations, CreateAlias, RenameAlias, DeleteAlias, ListAliasesRequest, ListCollectionAliasesRequest, AliasDescription, ListAliasesResponse
 # mapentries: "CollectionInfo_PayloadSchemaEntry" => ("AbstractString", "PayloadSchemaInfo"), "VectorParamsMap_MapEntry" => ("AbstractString", "VectorParams")

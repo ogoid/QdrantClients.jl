@@ -99,6 +99,26 @@ import .qdrant: UpdateAliases
 UpdateAliases(client::CollectionsBlockingClient, inp::qdrant.ChangeAliases) = UpdateAliases(client.stub, client.controller, inp)
 UpdateAliases(client::CollectionsClient, inp::qdrant.ChangeAliases, done::Function) = UpdateAliases(client.stub, client.controller, inp, done)
 
+import .qdrant: ListCollectionAliases
+"""
+    ListCollectionAliases
+
+- input: qdrant.ListCollectionAliasesRequest
+- output: qdrant.ListAliasesResponse
+"""
+ListCollectionAliases(client::CollectionsBlockingClient, inp::qdrant.ListCollectionAliasesRequest) = ListCollectionAliases(client.stub, client.controller, inp)
+ListCollectionAliases(client::CollectionsClient, inp::qdrant.ListCollectionAliasesRequest, done::Function) = ListCollectionAliases(client.stub, client.controller, inp, done)
+
+import .qdrant: ListAliases
+"""
+    ListAliases
+
+- input: qdrant.ListAliasesRequest
+- output: qdrant.ListAliasesResponse
+"""
+ListAliases(client::CollectionsBlockingClient, inp::qdrant.ListAliasesRequest) = ListAliases(client.stub, client.controller, inp)
+ListAliases(client::CollectionsClient, inp::qdrant.ListAliasesRequest, done::Function) = ListAliases(client.stub, client.controller, inp, done)
+
 # end service: qdrant.Collections
 
 # begin service: qdrant.Points
@@ -173,6 +193,16 @@ import .qdrant: SetPayload
 """
 SetPayload(client::PointsBlockingClient, inp::qdrant.SetPayloadPoints) = SetPayload(client.stub, client.controller, inp)
 SetPayload(client::PointsClient, inp::qdrant.SetPayloadPoints, done::Function) = SetPayload(client.stub, client.controller, inp, done)
+
+import .qdrant: OverwritePayload
+"""
+    OverwritePayload
+
+- input: qdrant.SetPayloadPoints
+- output: qdrant.PointsOperationResponse
+"""
+OverwritePayload(client::PointsBlockingClient, inp::qdrant.SetPayloadPoints) = OverwritePayload(client.stub, client.controller, inp)
+OverwritePayload(client::PointsClient, inp::qdrant.SetPayloadPoints, done::Function) = OverwritePayload(client.stub, client.controller, inp, done)
 
 import .qdrant: DeletePayload
 """
@@ -404,6 +434,16 @@ import .qdrant: List
 List(client::SnapshotsBlockingClient, inp::qdrant.ListSnapshotsRequest) = List(client.stub, client.controller, inp)
 List(client::SnapshotsClient, inp::qdrant.ListSnapshotsRequest, done::Function) = List(client.stub, client.controller, inp, done)
 
+import .qdrant: Delete
+"""
+    Delete
+
+- input: qdrant.DeleteSnapshotRequest
+- output: qdrant.DeleteSnapshotResponse
+"""
+Delete(client::SnapshotsBlockingClient, inp::qdrant.DeleteSnapshotRequest) = Delete(client.stub, client.controller, inp)
+Delete(client::SnapshotsClient, inp::qdrant.DeleteSnapshotRequest, done::Function) = Delete(client.stub, client.controller, inp, done)
+
 import .qdrant: CreateFull
 """
     CreateFull
@@ -423,6 +463,16 @@ import .qdrant: ListFull
 """
 ListFull(client::SnapshotsBlockingClient, inp::qdrant.ListFullSnapshotsRequest) = ListFull(client.stub, client.controller, inp)
 ListFull(client::SnapshotsClient, inp::qdrant.ListFullSnapshotsRequest, done::Function) = ListFull(client.stub, client.controller, inp, done)
+
+import .qdrant: DeleteFull
+"""
+    DeleteFull
+
+- input: qdrant.DeleteFullSnapshotRequest
+- output: qdrant.DeleteSnapshotResponse
+"""
+DeleteFull(client::SnapshotsBlockingClient, inp::qdrant.DeleteFullSnapshotRequest) = DeleteFull(client.stub, client.controller, inp)
+DeleteFull(client::SnapshotsClient, inp::qdrant.DeleteFullSnapshotRequest, done::Function) = DeleteFull(client.stub, client.controller, inp, done)
 
 # end service: qdrant.Snapshots
 

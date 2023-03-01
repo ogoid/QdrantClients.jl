@@ -9,7 +9,9 @@ const _Collections_methods = MethodDescriptor[
         MethodDescriptor("Create", 3, CreateCollection, CollectionOperationResponse),
         MethodDescriptor("Update", 4, UpdateCollection, CollectionOperationResponse),
         MethodDescriptor("Delete", 5, DeleteCollection, CollectionOperationResponse),
-        MethodDescriptor("UpdateAliases", 6, ChangeAliases, CollectionOperationResponse)
+        MethodDescriptor("UpdateAliases", 6, ChangeAliases, CollectionOperationResponse),
+        MethodDescriptor("ListCollectionAliases", 7, ListCollectionAliasesRequest, ListAliasesResponse),
+        MethodDescriptor("ListAliases", 8, ListAliasesRequest, ListAliasesResponse)
     ] # const _Collections_methods
 const _Collections_desc = ServiceDescriptor("qdrant.Collections", 1, _Collections_methods)
 
@@ -43,4 +45,10 @@ Delete(stub::CollectionsBlockingStub, controller::ProtoRpcController, inp::Delet
 UpdateAliases(stub::CollectionsStub, controller::ProtoRpcController, inp::ChangeAliases, done::Function) = call_method(stub.impl, _Collections_methods[6], controller, inp, done)
 UpdateAliases(stub::CollectionsBlockingStub, controller::ProtoRpcController, inp::ChangeAliases) = call_method(stub.impl, _Collections_methods[6], controller, inp)
 
-export Collections, CollectionsStub, CollectionsBlockingStub, Get, List, Create, Update, Delete, UpdateAliases
+ListCollectionAliases(stub::CollectionsStub, controller::ProtoRpcController, inp::ListCollectionAliasesRequest, done::Function) = call_method(stub.impl, _Collections_methods[7], controller, inp, done)
+ListCollectionAliases(stub::CollectionsBlockingStub, controller::ProtoRpcController, inp::ListCollectionAliasesRequest) = call_method(stub.impl, _Collections_methods[7], controller, inp)
+
+ListAliases(stub::CollectionsStub, controller::ProtoRpcController, inp::ListAliasesRequest, done::Function) = call_method(stub.impl, _Collections_methods[8], controller, inp, done)
+ListAliases(stub::CollectionsBlockingStub, controller::ProtoRpcController, inp::ListAliasesRequest) = call_method(stub.impl, _Collections_methods[8], controller, inp)
+
+export Collections, CollectionsStub, CollectionsBlockingStub, Get, List, Create, Update, Delete, UpdateAliases, ListCollectionAliases, ListAliases

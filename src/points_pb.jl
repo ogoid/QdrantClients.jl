@@ -2,6 +2,18 @@
 using ProtoBuf
 import ProtoBuf.meta
 
+const WriteOrderingType = (;[
+    Symbol("Weak") => Int32(0),
+    Symbol("Medium") => Int32(1),
+    Symbol("Strong") => Int32(2),
+]...)
+
+const ReadConsistencyType = (;[
+    Symbol("All") => Int32(0),
+    Symbol("Majority") => Int32(1),
+    Symbol("Quorum") => Int32(2),
+]...)
+
 const FieldType = (;[
     Symbol("FieldTypeKeyword") => Int32(0),
     Symbol("FieldTypeInteger") => Int32(1),
@@ -15,6 +27,88 @@ const UpdateStatus = (;[
     Symbol("Acknowledged") => Int32(1),
     Symbol("Completed") => Int32(2),
 ]...)
+
+mutable struct WriteOrdering <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function WriteOrdering(; kwargs...)
+        obj = new(meta(WriteOrdering), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct WriteOrdering
+const __meta_WriteOrdering = Ref{ProtoMeta}()
+function meta(::Type{WriteOrdering})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_WriteOrdering)
+            __meta_WriteOrdering[] = target = ProtoMeta(WriteOrdering)
+            allflds = Pair{Symbol,Union{Type,String}}[:_type => Int32]
+            meta(target, WriteOrdering, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+        end
+        __meta_WriteOrdering[]
+    end
+end
+function Base.getproperty(obj::WriteOrdering, name::Symbol)
+    if name === :_type
+        return (obj.__protobuf_jl_internal_values[name])::Int32
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct ReadConsistency <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function ReadConsistency(; kwargs...)
+        obj = new(meta(ReadConsistency), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct ReadConsistency
+const __meta_ReadConsistency = Ref{ProtoMeta}()
+function meta(::Type{ReadConsistency})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_ReadConsistency)
+            __meta_ReadConsistency[] = target = ProtoMeta(ReadConsistency)
+            allflds = Pair{Symbol,Union{Type,String}}[:_type => Int32, :factor => UInt64]
+            oneofs = Int[1,1]
+            oneof_names = Symbol[Symbol("value")]
+            meta(target, ReadConsistency, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_ReadConsistency[]
+    end
+end
+function Base.getproperty(obj::ReadConsistency, name::Symbol)
+    if name === :_type
+        return (obj.__protobuf_jl_internal_values[name])::Int32
+    elseif name === :factor
+        return (obj.__protobuf_jl_internal_values[name])::UInt64
+    else
+        getfield(obj, name)
+    end
+end
 
 mutable struct PointId <: ProtoType
     __protobuf_jl_internal_meta::ProtoMeta
@@ -99,141 +193,6 @@ function Base.getproperty(obj::Vector, name::Symbol)
     end
 end
 
-mutable struct SetPayloadPoints_PayloadEntry <: ProtoType
-    __protobuf_jl_internal_meta::ProtoMeta
-    __protobuf_jl_internal_values::Dict{Symbol,Any}
-    __protobuf_jl_internal_defaultset::Set{Symbol}
-
-    function SetPayloadPoints_PayloadEntry(; kwargs...)
-        obj = new(meta(SetPayloadPoints_PayloadEntry), Dict{Symbol,Any}(), Set{Symbol}())
-        values = obj.__protobuf_jl_internal_values
-        symdict = obj.__protobuf_jl_internal_meta.symdict
-        for nv in kwargs
-            fldname, fldval = nv
-            fldtype = symdict[fldname].jtyp
-            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
-            if fldval !== nothing
-                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
-            end
-        end
-        obj
-    end
-end # mutable struct SetPayloadPoints_PayloadEntry (mapentry)
-const __meta_SetPayloadPoints_PayloadEntry = Ref{ProtoMeta}()
-function meta(::Type{SetPayloadPoints_PayloadEntry})
-    ProtoBuf.metalock() do
-        if !isassigned(__meta_SetPayloadPoints_PayloadEntry)
-            __meta_SetPayloadPoints_PayloadEntry[] = target = ProtoMeta(SetPayloadPoints_PayloadEntry)
-            allflds = Pair{Symbol,Union{Type,String}}[:key => AbstractString, :value => Value]
-            meta(target, SetPayloadPoints_PayloadEntry, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
-        end
-        __meta_SetPayloadPoints_PayloadEntry[]
-    end
-end
-function Base.getproperty(obj::SetPayloadPoints_PayloadEntry, name::Symbol)
-    if name === :key
-        return (obj.__protobuf_jl_internal_values[name])::AbstractString
-    elseif name === :value
-        return (obj.__protobuf_jl_internal_values[name])::Value
-    else
-        getfield(obj, name)
-    end
-end
-
-mutable struct SetPayloadPoints <: ProtoType
-    __protobuf_jl_internal_meta::ProtoMeta
-    __protobuf_jl_internal_values::Dict{Symbol,Any}
-    __protobuf_jl_internal_defaultset::Set{Symbol}
-
-    function SetPayloadPoints(; kwargs...)
-        obj = new(meta(SetPayloadPoints), Dict{Symbol,Any}(), Set{Symbol}())
-        values = obj.__protobuf_jl_internal_values
-        symdict = obj.__protobuf_jl_internal_meta.symdict
-        for nv in kwargs
-            fldname, fldval = nv
-            fldtype = symdict[fldname].jtyp
-            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
-            if fldval !== nothing
-                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
-            end
-        end
-        obj
-    end
-end # mutable struct SetPayloadPoints
-const __meta_SetPayloadPoints = Ref{ProtoMeta}()
-function meta(::Type{SetPayloadPoints})
-    ProtoBuf.metalock() do
-        if !isassigned(__meta_SetPayloadPoints)
-            __meta_SetPayloadPoints[] = target = ProtoMeta(SetPayloadPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :payload => Base.Dict{AbstractString,Value}, :points => Base.Vector{PointId}]
-            oneofs = Int[0,1,0,0]
-            oneof_names = Symbol[Symbol("_wait")]
-            meta(target, SetPayloadPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
-        end
-        __meta_SetPayloadPoints[]
-    end
-end
-function Base.getproperty(obj::SetPayloadPoints, name::Symbol)
-    if name === :collection_name
-        return (obj.__protobuf_jl_internal_values[name])::AbstractString
-    elseif name === :wait
-        return (obj.__protobuf_jl_internal_values[name])::Bool
-    elseif name === :payload
-        return (obj.__protobuf_jl_internal_values[name])::Base.Dict{AbstractString,Value}
-    elseif name === :points
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{PointId}
-    else
-        getfield(obj, name)
-    end
-end
-
-mutable struct DeletePayloadPoints <: ProtoType
-    __protobuf_jl_internal_meta::ProtoMeta
-    __protobuf_jl_internal_values::Dict{Symbol,Any}
-    __protobuf_jl_internal_defaultset::Set{Symbol}
-
-    function DeletePayloadPoints(; kwargs...)
-        obj = new(meta(DeletePayloadPoints), Dict{Symbol,Any}(), Set{Symbol}())
-        values = obj.__protobuf_jl_internal_values
-        symdict = obj.__protobuf_jl_internal_meta.symdict
-        for nv in kwargs
-            fldname, fldval = nv
-            fldtype = symdict[fldname].jtyp
-            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
-            if fldval !== nothing
-                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
-            end
-        end
-        obj
-    end
-end # mutable struct DeletePayloadPoints
-const __meta_DeletePayloadPoints = Ref{ProtoMeta}()
-function meta(::Type{DeletePayloadPoints})
-    ProtoBuf.metalock() do
-        if !isassigned(__meta_DeletePayloadPoints)
-            __meta_DeletePayloadPoints[] = target = ProtoMeta(DeletePayloadPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :keys => Base.Vector{AbstractString}, :points => Base.Vector{PointId}]
-            oneofs = Int[0,1,0,0]
-            oneof_names = Symbol[Symbol("_wait")]
-            meta(target, DeletePayloadPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
-        end
-        __meta_DeletePayloadPoints[]
-    end
-end
-function Base.getproperty(obj::DeletePayloadPoints, name::Symbol)
-    if name === :collection_name
-        return (obj.__protobuf_jl_internal_values[name])::AbstractString
-    elseif name === :wait
-        return (obj.__protobuf_jl_internal_values[name])::Bool
-    elseif name === :keys
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{AbstractString}
-    elseif name === :points
-        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{PointId}
-    else
-        getfield(obj, name)
-    end
-end
-
 mutable struct CreateFieldIndexCollection <: ProtoType
     __protobuf_jl_internal_meta::ProtoMeta
     __protobuf_jl_internal_values::Dict{Symbol,Any}
@@ -259,9 +218,9 @@ function meta(::Type{CreateFieldIndexCollection})
     ProtoBuf.metalock() do
         if !isassigned(__meta_CreateFieldIndexCollection)
             __meta_CreateFieldIndexCollection[] = target = ProtoMeta(CreateFieldIndexCollection)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString, :field_type => Int32, :field_index_params => PayloadIndexParams]
-            oneofs = Int[0,1,0,2,3]
-            oneof_names = Symbol[Symbol("_wait"),Symbol("_field_type"),Symbol("_field_index_params")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString, :field_type => Int32, :field_index_params => PayloadIndexParams, :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2,3,4]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_field_type"),Symbol("_field_index_params"),Symbol("_ordering")]
             meta(target, CreateFieldIndexCollection, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_CreateFieldIndexCollection[]
@@ -278,6 +237,8 @@ function Base.getproperty(obj::CreateFieldIndexCollection, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Int32
     elseif name === :field_index_params
         return (obj.__protobuf_jl_internal_values[name])::PayloadIndexParams
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
     else
         getfield(obj, name)
     end
@@ -308,9 +269,9 @@ function meta(::Type{DeleteFieldIndexCollection})
     ProtoBuf.metalock() do
         if !isassigned(__meta_DeleteFieldIndexCollection)
             __meta_DeleteFieldIndexCollection[] = target = ProtoMeta(DeleteFieldIndexCollection)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString]
-            oneofs = Int[0,1,0]
-            oneof_names = Symbol[Symbol("_wait")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :field_name => AbstractString, :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_ordering")]
             meta(target, DeleteFieldIndexCollection, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_DeleteFieldIndexCollection[]
@@ -323,6 +284,8 @@ function Base.getproperty(obj::DeleteFieldIndexCollection, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :field_name
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
     else
         getfield(obj, name)
     end
@@ -681,10 +644,10 @@ function meta(::Type{GetPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_GetPoints)
             __meta_GetPoints[] = target = ProtoMeta(GetPoints)
-            fnum = Int[1,2,4,5]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :ids => Base.Vector{PointId}, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector]
-            oneofs = Int[0,0,0,1]
-            oneof_names = Symbol[Symbol("_with_vectors")]
+            fnum = Int[1,2,4,5,6]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :ids => Base.Vector{PointId}, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,0,1,2]
+            oneof_names = Symbol[Symbol("_with_vectors"),Symbol("_read_consistency")]
             meta(target, GetPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_GetPoints[]
@@ -699,6 +662,8 @@ function Base.getproperty(obj::GetPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
     elseif name === :with_vectors
         return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -729,9 +694,9 @@ function meta(::Type{SearchParams})
     ProtoBuf.metalock() do
         if !isassigned(__meta_SearchParams)
             __meta_SearchParams[] = target = ProtoMeta(SearchParams)
-            allflds = Pair{Symbol,Union{Type,String}}[:hnsw_ef => UInt64]
-            oneofs = Int[1]
-            oneof_names = Symbol[Symbol("_hnsw_ef")]
+            allflds = Pair{Symbol,Union{Type,String}}[:hnsw_ef => UInt64, :exact => Bool]
+            oneofs = Int[1,2]
+            oneof_names = Symbol[Symbol("_hnsw_ef"),Symbol("_exact")]
             meta(target, SearchParams, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_SearchParams[]
@@ -740,6 +705,51 @@ end
 function Base.getproperty(obj::SearchParams, name::Symbol)
     if name === :hnsw_ef
         return (obj.__protobuf_jl_internal_values[name])::UInt64
+    elseif name === :exact
+        return (obj.__protobuf_jl_internal_values[name])::Bool
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct LookupLocation <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function LookupLocation(; kwargs...)
+        obj = new(meta(LookupLocation), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct LookupLocation
+const __meta_LookupLocation = Ref{ProtoMeta}()
+function meta(::Type{LookupLocation})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_LookupLocation)
+            __meta_LookupLocation[] = target = ProtoMeta(LookupLocation)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :vector_name => AbstractString]
+            oneofs = Int[0,1]
+            oneof_names = Symbol[Symbol("_vector_name")]
+            meta(target, LookupLocation, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_LookupLocation[]
+    end
+end
+function Base.getproperty(obj::LookupLocation, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :vector_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
     else
         getfield(obj, name)
     end
@@ -1744,9 +1754,9 @@ function meta(::Type{UpsertPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_UpsertPoints)
             __meta_UpsertPoints[] = target = ProtoMeta(UpsertPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => Base.Vector{PointStruct}]
-            oneofs = Int[0,1,0]
-            oneof_names = Symbol[Symbol("_wait")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => Base.Vector{PointStruct}, :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_ordering")]
             meta(target, UpsertPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_UpsertPoints[]
@@ -1759,6 +1769,8 @@ function Base.getproperty(obj::UpsertPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :points
         return (obj.__protobuf_jl_internal_values[name])::Base.Vector{PointStruct}
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
     else
         getfield(obj, name)
     end
@@ -1961,9 +1973,9 @@ function meta(::Type{DeletePoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_DeletePoints)
             __meta_DeletePoints[] = target = ProtoMeta(DeletePoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => "PointsSelector"]
-            oneofs = Int[0,1,0]
-            oneof_names = Symbol[Symbol("_wait")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => "PointsSelector", :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_ordering")]
             meta(target, DeletePoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_DeletePoints[]
@@ -1976,6 +1988,108 @@ function Base.getproperty(obj::DeletePoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :points
         return (obj.__protobuf_jl_internal_values[name])::Any
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct SetPayloadPoints <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function SetPayloadPoints(; kwargs...)
+        obj = new(meta(SetPayloadPoints), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct SetPayloadPoints (has cyclic type dependency)
+const __meta_SetPayloadPoints = Ref{ProtoMeta}()
+function meta(::Type{SetPayloadPoints})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_SetPayloadPoints)
+            __meta_SetPayloadPoints[] = target = ProtoMeta(SetPayloadPoints)
+            fnum = Int[1,2,3,5,6]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :payload => "Base.Dict{AbstractString,Value}", :points_selector => "PointsSelector", :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2,3]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_points_selector"),Symbol("_ordering")]
+            meta(target, SetPayloadPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_SetPayloadPoints[]
+    end
+end
+function Base.getproperty(obj::SetPayloadPoints, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :wait
+        return (obj.__protobuf_jl_internal_values[name])::Bool
+    elseif name === :payload
+        return (obj.__protobuf_jl_internal_values[name])::Any
+    elseif name === :points_selector
+        return (obj.__protobuf_jl_internal_values[name])::Any
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
+    else
+        getfield(obj, name)
+    end
+end
+
+mutable struct DeletePayloadPoints <: ProtoType
+    __protobuf_jl_internal_meta::ProtoMeta
+    __protobuf_jl_internal_values::Dict{Symbol,Any}
+    __protobuf_jl_internal_defaultset::Set{Symbol}
+
+    function DeletePayloadPoints(; kwargs...)
+        obj = new(meta(DeletePayloadPoints), Dict{Symbol,Any}(), Set{Symbol}())
+        values = obj.__protobuf_jl_internal_values
+        symdict = obj.__protobuf_jl_internal_meta.symdict
+        for nv in kwargs
+            fldname, fldval = nv
+            fldtype = symdict[fldname].jtyp
+            (fldname in keys(symdict)) || error(string(typeof(obj), " has no field with name ", fldname))
+            if fldval !== nothing
+                values[fldname] = isa(fldval, fldtype) ? fldval : convert(fldtype, fldval)
+            end
+        end
+        obj
+    end
+end # mutable struct DeletePayloadPoints (has cyclic type dependency)
+const __meta_DeletePayloadPoints = Ref{ProtoMeta}()
+function meta(::Type{DeletePayloadPoints})
+    ProtoBuf.metalock() do
+        if !isassigned(__meta_DeletePayloadPoints)
+            __meta_DeletePayloadPoints[] = target = ProtoMeta(DeletePayloadPoints)
+            fnum = Int[1,2,3,5,6]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :keys => Base.Vector{AbstractString}, :points_selector => "PointsSelector", :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2,3]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_points_selector"),Symbol("_ordering")]
+            meta(target, DeletePayloadPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
+        end
+        __meta_DeletePayloadPoints[]
+    end
+end
+function Base.getproperty(obj::DeletePayloadPoints, name::Symbol)
+    if name === :collection_name
+        return (obj.__protobuf_jl_internal_values[name])::AbstractString
+    elseif name === :wait
+        return (obj.__protobuf_jl_internal_values[name])::Bool
+    elseif name === :keys
+        return (obj.__protobuf_jl_internal_values[name])::Base.Vector{AbstractString}
+    elseif name === :points_selector
+        return (obj.__protobuf_jl_internal_values[name])::Any
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
     else
         getfield(obj, name)
     end
@@ -2006,9 +2120,9 @@ function meta(::Type{ClearPayloadPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_ClearPayloadPoints)
             __meta_ClearPayloadPoints[] = target = ProtoMeta(ClearPayloadPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => "PointsSelector"]
-            oneofs = Int[0,1,0]
-            oneof_names = Symbol[Symbol("_wait")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :wait => Bool, :points => "PointsSelector", :ordering => WriteOrdering]
+            oneofs = Int[0,1,0,2]
+            oneof_names = Symbol[Symbol("_wait"),Symbol("_ordering")]
             meta(target, ClearPayloadPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_ClearPayloadPoints[]
@@ -2021,6 +2135,8 @@ function Base.getproperty(obj::ClearPayloadPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::Bool
     elseif name === :points
         return (obj.__protobuf_jl_internal_values[name])::Any
+    elseif name === :ordering
+        return (obj.__protobuf_jl_internal_values[name])::WriteOrdering
     else
         getfield(obj, name)
     end
@@ -2051,11 +2167,11 @@ function meta(::Type{SearchPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_SearchPoints)
             __meta_SearchPoints[] = target = ProtoMeta(SearchPoints)
-            fnum = Int[1,2,3,4,6,7,8,9,10,11]
+            fnum = Int[1,2,3,4,6,7,8,9,10,11,12]
             pack = Symbol[:vector]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :vector => Base.Vector{Float32}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :vector_name => AbstractString, :with_vectors => WithVectorsSelector]
-            oneofs = Int[0,0,0,0,0,0,1,2,3,4]
-            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_vector_name"),Symbol("_with_vectors")]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :vector => Base.Vector{Float32}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :vector_name => AbstractString, :with_vectors => WithVectorsSelector, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,0,0,0,0,1,2,3,4,5]
+            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_vector_name"),Symbol("_with_vectors"),Symbol("_read_consistency")]
             meta(target, SearchPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, pack, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_SearchPoints[]
@@ -2082,6 +2198,8 @@ function Base.getproperty(obj::SearchPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :with_vectors
         return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -2112,8 +2230,10 @@ function meta(::Type{SearchBatchPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_SearchBatchPoints)
             __meta_SearchBatchPoints[] = target = ProtoMeta(SearchBatchPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :search_points => Base.Vector{SearchPoints}]
-            meta(target, SearchBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :search_points => Base.Vector{SearchPoints}, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,1]
+            oneof_names = Symbol[Symbol("_read_consistency")]
+            meta(target, SearchBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_SearchBatchPoints[]
     end
@@ -2123,6 +2243,8 @@ function Base.getproperty(obj::SearchBatchPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :search_points
         return (obj.__protobuf_jl_internal_values[name])::Base.Vector{SearchPoints}
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -2153,10 +2275,10 @@ function meta(::Type{ScrollPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_ScrollPoints)
             __meta_ScrollPoints[] = target = ProtoMeta(ScrollPoints)
-            fnum = Int[1,2,3,4,6,7]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :filter => "Filter", :offset => PointId, :limit => UInt32, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector]
-            oneofs = Int[0,0,1,2,0,3]
-            oneof_names = Symbol[Symbol("_offset"),Symbol("_limit"),Symbol("_with_vectors")]
+            fnum = Int[1,2,3,4,6,7,8]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :filter => "Filter", :offset => PointId, :limit => UInt32, :with_payload => WithPayloadSelector, :with_vectors => WithVectorsSelector, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,1,2,0,3,4]
+            oneof_names = Symbol[Symbol("_offset"),Symbol("_limit"),Symbol("_with_vectors"),Symbol("_read_consistency")]
             meta(target, ScrollPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_ScrollPoints[]
@@ -2175,6 +2297,8 @@ function Base.getproperty(obj::ScrollPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::WithPayloadSelector
     elseif name === :with_vectors
         return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -2205,10 +2329,10 @@ function meta(::Type{RecommendPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_RecommendPoints)
             __meta_RecommendPoints[] = target = ProtoMeta(RecommendPoints)
-            fnum = Int[1,2,3,4,5,7,8,9,10,11,12]
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :positive => Base.Vector{PointId}, :negative => Base.Vector{PointId}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :_using => AbstractString, :with_vectors => WithVectorsSelector]
-            oneofs = Int[0,0,0,0,0,0,0,1,2,3,4]
-            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_using"),Symbol("_with_vectors")]
+            fnum = Int[1,2,3,4,5,7,8,9,10,11,12,13,14]
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :positive => Base.Vector{PointId}, :negative => Base.Vector{PointId}, :filter => "Filter", :limit => UInt64, :with_payload => WithPayloadSelector, :params => SearchParams, :score_threshold => Float32, :offset => UInt64, :_using => AbstractString, :with_vectors => WithVectorsSelector, :lookup_from => LookupLocation, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,0,0,0,0,0,1,2,3,4,5,6]
+            oneof_names = Symbol[Symbol("_score_threshold"),Symbol("_offset"),Symbol("_using"),Symbol("_with_vectors"),Symbol("_lookup_from"),Symbol("_read_consistency")]
             meta(target, RecommendPoints, allflds, ProtoBuf.DEF_REQ, fnum, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_RecommendPoints[]
@@ -2237,6 +2361,10 @@ function Base.getproperty(obj::RecommendPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :with_vectors
         return (obj.__protobuf_jl_internal_values[name])::WithVectorsSelector
+    elseif name === :lookup_from
+        return (obj.__protobuf_jl_internal_values[name])::LookupLocation
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -2267,8 +2395,10 @@ function meta(::Type{RecommendBatchPoints})
     ProtoBuf.metalock() do
         if !isassigned(__meta_RecommendBatchPoints)
             __meta_RecommendBatchPoints[] = target = ProtoMeta(RecommendBatchPoints)
-            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :recommend_points => Base.Vector{RecommendPoints}]
-            meta(target, RecommendBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, ProtoBuf.DEF_ONEOFS, ProtoBuf.DEF_ONEOF_NAMES)
+            allflds = Pair{Symbol,Union{Type,String}}[:collection_name => AbstractString, :recommend_points => Base.Vector{RecommendPoints}, :read_consistency => ReadConsistency]
+            oneofs = Int[0,0,1]
+            oneof_names = Symbol[Symbol("_read_consistency")]
+            meta(target, RecommendBatchPoints, allflds, ProtoBuf.DEF_REQ, ProtoBuf.DEF_FNUM, ProtoBuf.DEF_VAL, ProtoBuf.DEF_PACK, ProtoBuf.DEF_WTYPES, oneofs, oneof_names)
         end
         __meta_RecommendBatchPoints[]
     end
@@ -2278,6 +2408,8 @@ function Base.getproperty(obj::RecommendBatchPoints, name::Symbol)
         return (obj.__protobuf_jl_internal_values[name])::AbstractString
     elseif name === :recommend_points
         return (obj.__protobuf_jl_internal_values[name])::Base.Vector{RecommendPoints}
+    elseif name === :read_consistency
+        return (obj.__protobuf_jl_internal_values[name])::ReadConsistency
     else
         getfield(obj, name)
     end
@@ -2461,5 +2593,5 @@ function Base.getproperty(obj::PointsSelector, name::Symbol)
     end
 end
 
-export FieldType, UpdateStatus, PointId, Vector, UpsertPoints, DeletePoints, GetPoints, SetPayloadPoints_PayloadEntry, SetPayloadPoints, DeletePayloadPoints, ClearPayloadPoints, CreateFieldIndexCollection, DeleteFieldIndexCollection, PayloadIncludeSelector, PayloadExcludeSelector, WithPayloadSelector, NamedVectors_VectorsEntry, NamedVectors, Vectors, VectorsSelector, WithVectorsSelector, SearchParams, SearchPoints, SearchBatchPoints, ScrollPoints, RecommendPoints, RecommendBatchPoints, CountPoints, PointsOperationResponse, UpdateResult, ScoredPoint_PayloadEntry, ScoredPoint, SearchResponse, BatchResult, SearchBatchResponse, CountResponse, ScrollResponse, CountResult, RetrievedPoint_PayloadEntry, RetrievedPoint, GetResponse, RecommendResponse, RecommendBatchResponse, Filter, Condition, IsEmptyCondition, HasIdCondition, FieldCondition, Match, Range, GeoBoundingBox, GeoRadius, ValuesCount, PointsSelector, PointsIdsList, PointStruct_PayloadEntry, PointStruct, GeoPoint, DeletePoints, ClearPayloadPoints, SearchPoints, SearchBatchPoints, ScrollPoints, RecommendPoints, RecommendBatchPoints, CountPoints, Filter, Condition, PointsSelector
+export WriteOrderingType, ReadConsistencyType, FieldType, UpdateStatus, WriteOrdering, ReadConsistency, PointId, Vector, UpsertPoints, DeletePoints, GetPoints, SetPayloadPoints_PayloadEntry, SetPayloadPoints, DeletePayloadPoints, ClearPayloadPoints, CreateFieldIndexCollection, DeleteFieldIndexCollection, PayloadIncludeSelector, PayloadExcludeSelector, WithPayloadSelector, NamedVectors_VectorsEntry, NamedVectors, Vectors, VectorsSelector, WithVectorsSelector, SearchParams, SearchPoints, SearchBatchPoints, ScrollPoints, LookupLocation, RecommendPoints, RecommendBatchPoints, CountPoints, PointsOperationResponse, UpdateResult, ScoredPoint_PayloadEntry, ScoredPoint, SearchResponse, BatchResult, SearchBatchResponse, CountResponse, ScrollResponse, CountResult, RetrievedPoint_PayloadEntry, RetrievedPoint, GetResponse, RecommendResponse, RecommendBatchResponse, Filter, Condition, IsEmptyCondition, HasIdCondition, FieldCondition, Match, Range, GeoBoundingBox, GeoRadius, ValuesCount, PointsSelector, PointsIdsList, PointStruct_PayloadEntry, PointStruct, GeoPoint, DeletePoints, SetPayloadPoints, DeletePayloadPoints, ClearPayloadPoints, SearchPoints, SearchBatchPoints, ScrollPoints, RecommendPoints, RecommendBatchPoints, CountPoints, Filter, Condition, PointsSelector
 # mapentries: "SetPayloadPoints_PayloadEntry" => ("AbstractString", "Value"), "RetrievedPoint_PayloadEntry" => ("AbstractString", "Value"), "NamedVectors_VectorsEntry" => ("AbstractString", "Vector"), "PointStruct_PayloadEntry" => ("AbstractString", "Value"), "ScoredPoint_PayloadEntry" => ("AbstractString", "Value")

@@ -1,5 +1,5 @@
 
-VERSION=0.9.1
+VERSION=1.0.2
 
 SRC_URL=https://github.com/qdrant/qdrant/archive/refs/tags/v${VERSION}.tar.gz
 
